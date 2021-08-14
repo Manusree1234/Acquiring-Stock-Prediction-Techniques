@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+from sklearn import svm
 
-# This is the percentage by which a stock has to beat S&P500 to be considered a 'buy'
 OUTPERFORMANCE = 10
 
 
@@ -46,7 +46,9 @@ def datasetBuilder():
 def stockPredictor():
     X_tr, y_tr = datasetBuilder()
     model = RandomForestClassifier(n_estimators=120, random_state=183)
+    model_svm = svm.SVC(kernel='linear')
     model.fit(X_tr, y_tr)
+    model_svm.fit(X_tr, y_tr)
 
     data = pd.read_csv("forward_sample.csv", index_col="Date")
     data.dropna(axis=0, how="any", inplace=True)
@@ -55,14 +57,23 @@ def stockPredictor():
     z = data["Ticker"].values
 
     y_pr = model.predict(X_test)
-    if sum(y_pr) == 0:
-        print("No stocks are predicted!")
+    y_pr_svm = model_svm.redict(X_test)
+    if sum(y_pr) and sum(y_pr_svm) == 0:
+        print("For both models, no stocks are projected.!")
+    elif sum(y_pr_svm) == 0:
+        print("svm is expected to have no stocks.!")
+    elif sum(y_pr) == 0:
+        print("For the random classifier, no stocks are predicted.!")
     else:
         print(
             f"{len(z[y_pr].tolist())} stocks predicted to outperform the S&P500 by more than {OUTPERFORMANCE}%:"
         )
         print(" ".join(z[y_pr].tolist()))
-        return z[y_pr].tolist()
+        print(
+            f"{len(z[y_pr_svm].tolist())} stocks predicted to outperform the S&P500 by more than {OUTPERFORMANCE}%:"
+        )
+        print(" ".join(z[y_pr_svm].tolist()))
+        return z[y_pr].tolist(), z[y_pr_svm].tolist()
 
 
 if __name__ == "__main__":
