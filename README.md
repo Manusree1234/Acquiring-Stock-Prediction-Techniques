@@ -43,6 +43,8 @@ Creating the training dataset , Preprocessing historical price data, Parsing, Ba
 •	Make sure all the resources and packages are included and run the code. <br />
 •	Upon running the code, you will get output with the accuracy. <br />
 I used the Random Forest Classifier  and SVM Model . Tested the stock prediction for both the models.Here you go the test results for both models:  <br />
+![image](https://user-images.githubusercontent.com/88638326/129993482-7c98a2eb-0168-40ed-ae23-6c507bddba85.png)
+
 
 # Support
 You can reach out to me at one of the following places: 
